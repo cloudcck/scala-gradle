@@ -4,7 +4,9 @@ apply plugin: "idea"
 
 // set extra properties
 ext {
-    scalaVersion = "2.11.6"
+    scalaMajorVersion = '2.10'
+    scalaVersion = "${scalaMajorVersion}.6"
+    sparkVersion = "1.6.2"
 }
 
 repositories {
@@ -13,6 +15,10 @@ repositories {
 
 dependencies {
     compile "org.scala-lang:scala-library:$scalaVersion"
+    compile "org.apache.spark:spark-core_$scalaMajorVersion:$sparkVersion"
+    compile "org.apache.spark:spark-sql_$scalaMajorVersion:$sparkVersion"
+    compile "com.datastax.spark:spark-cassandra-connector_$scalaMajorVersion:1.6.5"
+
 }
 
 // wrapper gradle
@@ -34,3 +40,5 @@ task copyDep(type: Copy){
     from configurations.runtime
     into "$buildDir/libs/3rd-lib"
 }
+
+jar.dependsOn copyDep
